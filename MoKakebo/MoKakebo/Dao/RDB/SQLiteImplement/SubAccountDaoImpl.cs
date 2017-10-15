@@ -7,76 +7,55 @@ using MoKakebo.Framework.Utility;
 using MoKakebo.Dao.Interface;
 using MoKakebo.Model;
 using System.Text;
+using MoKakebo.Const;
 
 namespace MoKakebo.Dao.RDB.SQLiteImplement {
-    /// <summary>勘定科目DAO SQLite実装クラス</summary>
+    /// <Summary>勘定科目DAO SQLite実装クラス</Summary>
     public class SubaccountDaoImpl : ISubaccountDao {
-        /// <summary>テーブル名</summary>
+        /// <Summary>テーブル名</Summary>
         private static string TABLE_NAME = "MASTER_SUBACCOUNT";
-        /// <summary>カラム名_ID</summary>
+        /// <Summary>カラム名_ID</Summary>
         private static string COL_ID = "ID";
-        /// <summary>カラム名_名前</summary>
+        /// <Summary>カラム名_名前</Summary>
         private static string COL_NAME = "NAME";
-        /// <summary>カラム名_科目</summary>
+        /// <Summary>カラム名_科目</Summary>
         private static string COL_ACCOUNT = "ACCOUNT";
-        /// <summary>カラム名_最終使用日</summary>
+        /// <Summary>カラム名_最終使用日</Summary>
         private static string COL_LATEST_USED = "LATEST_USED";
+        /// <Summary>並び順</Summary>
+        private static string ORDER = $"ORDER BY {COL_LATEST_USED} DESC";
 
-        /// <summary>
-        /// 科目列挙型をDB値に変換する
-        /// </summary>
-        /// <param name="account">科目列挙型</param>
-        /// <returns>DB値</returns>
-        private static int getDBValue(Const.Enum.Account account) {
-            switch(account) {
-                case Const.Enum.Account.Loss:
-                    return 0;
-                case Const.Enum.Account.Profit:
-                    return 1;
-                default:
-                    return -1;
-            }
-        }
-
-        /// <summary>
-        /// DB値を科目列挙型に変換する
-        /// </summary>
-        /// <param name="dbValue">DB値</param>
-        /// <returns>科目列挙型</returns>
-        private static Const.Enum.Account getAccount(int dbValue) {
-            switch(dbValue) {
-                case 0:
-                    return Const.Enum.Account.Loss;
-                case 1:
-                    return Const.Enum.Account.Profit;
-                default:
-                    return Const.Enum.Account.Default;
-            }
-        }
-
-        /// <summary>
+        /// <Summary>
         /// 条件に従いDB問い合わせ、勘定科目コレクションを返す
-        /// </summary>
-        /// <param name="cmd">SQLiteコマンド</param>
+        /// </Summary>
+        /// <param Name="cmd">SQLiteコマンド</param>
         /// <returns>勘定科目コレクション</returns>
         private SubaccountCollection select(SqliteUtility.Command cmd) {
             SubaccountCollection result = new SubaccountCollection();
             DataTable dt = SqliteUtility.select(cmd);
             foreach(DataRow row in dt.Rows) {
-                result.Add(new Subaccount(
-                    SqliteUtility.DataRowConverter.getValue<long>(row, COL_ID),
-                    SqliteUtility.DataRowConverter.getValue<string>(row, COL_NAME),
-                    SqliteUtility.DataRowConverter.getValue<Const.Enum.Account>(row, COL_ACCOUNT),
-                    SqliteUtility.DataRowConverter.getValue<DateTime>(row, COL_LATEST_USED)));
+                try {
+                    Account account = new Account(SqliteUtility.DataRowConverter.getValue<long>(row, COL_ACCOUNT));
+                    DateTime latestUsed = DateTime.Parse(SqliteUtility.DataRowConverter.getValue<string>(row, COL_LATEST_USED));
+                    Subaccount subaccount = new Subaccount(
+                        SqliteUtility.DataRowConverter.getValue<long>(row, COL_ID),
+                        SqliteUtility.DataRowConverter.getValue<string>(row, COL_NAME),
+                        account,
+                        latestUsed);
+                    result.Add(subaccount);
+                }
+                catch (Exception ex) {
+                    throw ex;
+                }
             }
             return result;
         }
 
         #region SubaccountDao implement
-        /// <summary>
+        /// <Summary>
         /// レコード削除
-        /// </summary>
-        /// <param name="idList">削除対象IDリスト</param>
+        /// </Summary>
+        /// <param Name="idList">削除対象IDリスト</param>
         /// <returns>削除件数</returns>
         public int delete(List<long> idList) {
             string sql = $"delete {TABLE_NAME} where {COL_ID}=@{COL_ID}";
@@ -91,19 +70,19 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
             return SqliteUtility.executeNonQuery(cmdList);
         }
 
-        /// <summary>
+        /// <Summary>
         /// レコード削除
-        /// </summary>
-        /// <param name="id">削除対象ID</param>
+        /// </Summary>
+        /// <param Name="id">削除対象ID</param>
         /// <returns>削除件数</returns>
         public int delete(long id) {
             return this.delete(new List<long>() { id });
         }
 
-        /// <summary>
+        /// <Summary>
         /// レコード登録
-        /// </summary>
-        /// <param name="objCollection">登録対象アイテムリスト</param>
+        /// </Summary>
+        /// <param Name="objCollection">登録対象アイテムリスト</param>
         /// <returns>登録件数</returns>
         public int register(SubaccountCollection objCollection) {
             if (objCollection.Count == 0) {
@@ -126,10 +105,10 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
 
             foreach(Subaccount obj in objCollection) {
                 List<SQLiteParameter> prmList = new List<SQLiteParameter>();
-                prmList.Add(new SQLiteParameter($"@{COL_ID}", obj.id));
-                prmList.Add(new SQLiteParameter($"@{COL_NAME}", obj.name));
-                prmList.Add(new SQLiteParameter($"@{COL_ACCOUNT}", getDBValue(obj.account)));
-                prmList.Add(new SQLiteParameter($"@{COL_LATEST_USED}", obj.latestUsed.ToString("yyyy/MM/dd")));
+                prmList.Add(new SQLiteParameter($"@{COL_ID}", obj.Id));
+                prmList.Add(new SQLiteParameter($"@{COL_NAME}", obj.Name));
+                prmList.Add(new SQLiteParameter($"@{COL_ACCOUNT}", obj.Account.Id));
+                prmList.Add(new SQLiteParameter($"@{COL_LATEST_USED}", obj.LatestUsed.ToString("yyyy/MM/dd")));
 
                 cmdList.Add(new SqliteUtility.Command(
                     sql.ToString(),
@@ -139,19 +118,19 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
             return SqliteUtility.executeNonQuery(cmdList);
         }
 
-        /// <summary>
+        /// <Summary>
         /// レコード登録
-        /// </summary>
-        /// <param name="obj">登録対象アイテム</param>
+        /// </Summary>
+        /// <param Name="obj">登録対象アイテム</param>
         /// <returns>登録件数</returns>
         public int register(Subaccount obj) {
             return register(new SubaccountCollection() { obj });
         }
 
-        /// <summary>
+        /// <Summary>
         /// レコード更新
-        /// </summary>
-        /// <param name="objCollection">更新対象アイテムリスト</param>
+        /// </Summary>
+        /// <param Name="objCollection">更新対象アイテムリスト</param>
         /// <returns>更新件数</returns>
         public int update(SubaccountCollection objCollection) {
             if(objCollection.Count == 0) {
@@ -171,10 +150,10 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
 
             foreach(Subaccount obj in objCollection) {
                 List<SQLiteParameter> prmList = new List<SQLiteParameter>();
-                prmList.Add(new SQLiteParameter($"@{COL_ID}", obj.id));
-                prmList.Add(new SQLiteParameter($"@{COL_NAME}", obj.name));
-                prmList.Add(new SQLiteParameter($"@{COL_ACCOUNT}", getDBValue(obj.account)));
-                prmList.Add(new SQLiteParameter($"@{COL_LATEST_USED}", obj.latestUsed.ToString("yyyy/MM/dd")));
+                prmList.Add(new SQLiteParameter($"@{COL_ID}", obj.Id));
+                prmList.Add(new SQLiteParameter($"@{COL_NAME}", obj.Name));
+                prmList.Add(new SQLiteParameter($"@{COL_ACCOUNT}", obj.Account.Id));
+                prmList.Add(new SQLiteParameter($"@{COL_LATEST_USED}", obj.LatestUsed.ToString("yyyy/MM/dd")));
 
                 cmdList.Add(new SqliteUtility.Command(
                     sql.ToString(),
@@ -184,52 +163,52 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
             return SqliteUtility.executeNonQuery(cmdList);
         }
 
-        /// <summary>
+        /// <Summary>
         /// レコード更新
-        /// </summary>
-        /// <param name="obj">更新対象アイテム</param>
+        /// </Summary>
+        /// <param Name="obj">更新対象アイテム</param>
         /// <returns>更新件数</returns>
         public int update(Subaccount obj) {
             return update(new SubaccountCollection() { obj });
         }
 
-        /// <summary>
+        /// <Summary>
         /// テーブル全件取得する
-        /// </summary>
+        /// </Summary>
         /// <returns>テーブル全件</returns>
         public SubaccountCollection selectAll() {
             return selectWhereLatestDateBetween(DateTime.MinValue, DateTime.MaxValue);
         }
 
-        /// <summary>
+        /// <Summary>
         /// 指定された科目に紐づくレコードを取得する
-        /// </summary>
-        /// <param name="accountCollection">指定する科目</param>
+        /// </Summary>
+        /// <param Name="accountCollection">指定する科目</param>
         /// <returns>指定された科目に紐づくレコード</returns>
-        public SubaccountCollection selectWhereAccountIn(List<Const.Enum.Account> accountCollection) {
+        public SubaccountCollection selectWhereAccountIn(List<Account> accountCollection) {
             SubaccountCollection result = new SubaccountCollection();
-            string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_ACCOUNT}=@{COL_ACCOUNT}";
+            string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_ACCOUNT}=@{COL_ACCOUNT} {ORDER}";
 
-            foreach(Const.Enum.Account targetAccount in accountCollection) {
+            foreach(Account targetAccount in accountCollection) {
                 result.AddRange(select(
                     new SqliteUtility.Command(
                         sql,
-                        new List<SQLiteParameter>() { new SQLiteParameter($"@{COL_ACCOUNT}", getDBValue(targetAccount)) })));
+                        new List<SQLiteParameter>() { new SQLiteParameter($"@{COL_ACCOUNT}", targetAccount.Id) })));
             }
 
             return result;
         }
 
-        /// <summary>
+        /// <Summary>
         /// 指定された日付の範囲内のレコードを取得する
-        /// </summary>
-        /// <param name="start">開始日付</param>
-        /// <param name="end">終了日付</param>
+        /// </Summary>
+        /// <param Name="start">開始日付</param>
+        /// <param Name="end">終了日付</param>
         /// <returns>指定された日付の範囲内のレコード</returns>
         public SubaccountCollection selectWhereLatestDateBetween(DateTime start, DateTime end) {
             string startParam = "@start";
             string endParam = "@end";
-            string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_LATEST_USED} BETWEEN {startParam} and {endParam}";
+            string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_LATEST_USED} BETWEEN {startParam} and {endParam} {ORDER}";
 
             string dateFormat = "yyyy/MM/dd";
             List<SQLiteParameter> prmList = new List<SQLiteParameter>();

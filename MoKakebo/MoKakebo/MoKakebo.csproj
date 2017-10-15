@@ -70,7 +70,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aggregation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Aggregation.Designer.cs">
+      <DependentUpon>Aggregation.cs</DependentUpon>
+    </Compile>
     <Compile Include="AppCache.cs" />
+    <Compile Include="Const\Account.cs" />
     <Compile Include="Const\Config.cs" />
     <Compile Include="Const\DefaultValue.cs" />
     <Compile Include="Const\Enum.cs" />
@@ -81,14 +88,18 @@
     <Compile Include="Dao\Interface\IBusinessDao.cs" />
     <Compile Include="Dao\Interface\ISubaccountDao.cs" />
     <Compile Include="Dao\Interface\ISummaryDao.cs" />
-    <Compile Include="Framework\Model\Interface\IHasIdObject.cs" />
-    <Compile Include="Framework\Model\Abstract\HasIdObjectList.cs" />
+    <Compile Include="Framework\Model\Abstract\HasIdNameList.cs" />
+    <Compile Include="Framework\Model\Interface\IHasDate.cs" />
+    <Compile Include="Framework\Model\Interface\IHasIdName.cs" />
+    <Compile Include="Framework\Model\Interface\IHasId.cs" />
+    <Compile Include="Framework\Model\Abstract\HasIdList.cs" />
+    <Compile Include="Framework\Model\Interface\IHasLatestUsed.cs" />
     <Compile Include="Framework\Utility\SqliteUtility.cs" />
-    <Compile Include="Main.cs">
+    <Compile Include="NewBusiness.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
+    <Compile Include="NewBusiness.Designer.cs">
+      <DependentUpon>NewBusiness.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Business.cs" />
     <Compile Include="Model\BusinessCollection.cs" />
@@ -98,8 +109,17 @@
     <Compile Include="Model\SummaryCollection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
+    <Compile Include="sample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="sample.Designer.cs">
+      <DependentUpon>sample.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Aggregation.resx">
+      <DependentUpon>Aggregation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewBusiness.resx">
+      <DependentUpon>NewBusiness.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -110,6 +130,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="sample.resx">
+      <DependentUpon>sample.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

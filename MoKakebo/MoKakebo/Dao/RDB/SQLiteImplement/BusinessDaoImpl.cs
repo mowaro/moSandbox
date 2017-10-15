@@ -10,32 +10,34 @@ using MoKakebo.Framework.Utility;
 using MoKakebo.Model;
 
 namespace MoKakebo.Dao.RDB.SQLiteImplement {
-    /// <summary>取引DAO SQLite実装クラス</summary>
+    /// <Summary>取引DAO SQLite実装クラス</Summary>
     public class BusinessDaoImpl : IBusinessDao {
-        /// <summary>テーブル名</summary>
+        /// <Summary>テーブル名</Summary>
         private static string TABLE_NAME = "TRAN_BUSINESS";
-        /// <summary>カラム名_ID</summary>
+        /// <Summary>カラム名_ID</Summary>
         private static string COL_ID = "ID";
-        /// <summary>カラム名_摘要</summary>
-        private static string COL_SUMMARY = "SUMMARY";
-        /// <summary>カラム名_日付</summary>
+        /// <Summary>カラム名_摘要</Summary>
+        private static string COL_SUMMARY = "SUMMARY_ID";
+        /// <Summary>カラム名_日付</Summary>
         private static string COL_DATE = "DATE";
-        /// <summary>カラム名_金額</summary>
+        /// <Summary>カラム名_金額</Summary>
         private static string COL_AMOUNT = "AMOUNT";
-        /// <summary>カラム名_備考</summary>
+        /// <Summary>カラム名_備考</Summary>
         private static string COL_COMMENT = "COMMENT";
+        /// <Summary>並び順</Summary>
+        private static string ORDER = $"ORDER BY {COL_DATE} DESC";
 
-        /// <summary>
+        /// <Summary>
         /// 条件に従いDB問い合わせ、取引コレクションを返す
-        /// </summary>
-        /// <param name="cmd">SQLiteコマンド</param>
+        /// </Summary>
+        /// <param Name="cmd">SQLiteコマンド</param>
         /// <returns>取引コレクション</returns>
         private BusinessCollection select(SqliteUtility.Command cmd) {
             BusinessCollection result = new BusinessCollection();
             DataTable dt = SqliteUtility.select(cmd);
             foreach(DataRow row in dt.Rows) {
                 Summary summary
-                    = AppCache.getInstance().getSummaryMaster().get(
+                    = AppCache.getSummaryMaster().get(
                         SqliteUtility.DataRowConverter.getValue<long>(row, COL_SUMMARY));
 
                 result.Add(new Business(
@@ -48,11 +50,37 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
             return result;
         }
 
-        #region BusinessDao implement
         /// <summary>
-        /// レコード削除
+        /// 摘要に使用した痕跡を残す
         /// </summary>
-        /// <param name="idList">削除対象IDリスト</param>
+        /// <param name="obj">使用した取引</param>
+        /// <returns>更新件数</returns>
+        private int setTraceUsing(Business obj) {
+            BusinessCollection collection = new BusinessCollection();
+            collection.Add(obj);
+            return setTraceUsing(collection);
+        }
+
+        /// <summary>
+        /// 摘要に使用した痕跡を残す
+        /// </summary>
+        /// <param name="collection">使用した取引</param>
+        /// <returns>更新件数</returns>
+        private int setTraceUsing(BusinessCollection collection) {
+            SummaryCollection traces = new SummaryCollection();
+            foreach(Business obj in collection) {
+                traces.Add(new Summary(obj.Summary.Id, obj.Summary.Name, obj.Summary.Subaccount, DateTime.Now));
+            }
+
+            SummaryDaoImpl dao = new SummaryDaoImpl();
+            return dao.update(traces);
+        }
+
+        #region BusinessDao implement
+        /// <Summary>
+        /// レコード削除
+        /// </Summary>
+        /// <param Name="idList">削除対象IDリスト</param>
         /// <returns>削除件数</returns>
         public int delete(List<long> idList) {
             string sql = $"delete {TABLE_NAME} where {COL_ID}=@{COL_ID}";
@@ -67,19 +95,19 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
             return SqliteUtility.executeNonQuery(cmdList);
         }
 
-        /// <summary>
+        /// <Summary>
         /// レコード削除
-        /// </summary>
-        /// <param name="id">削除対象ID</param>
+        /// </Summary>
+        /// <param Name="id">削除対象ID</param>
         /// <returns>削除件数</returns>
         public int delete(long id) {
             return this.delete(new List<long>() { id });
         }
 
-        /// <summary>
+        /// <Summary>
         /// レコード登録
-        /// </summary>
-        /// <param name="objCollection">登録対象アイテムリスト</param>
+        /// </Summary>
+        /// <param Name="objCollection">登録対象アイテムリスト</param>
         /// <returns>登録件数</returns>
         public int register(BusinessCollection objCollection) {
             if(objCollection.Count == 0) {
@@ -104,33 +132,36 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
 
             foreach(Business obj in objCollection) {
                 List<SQLiteParameter> prmList = new List<SQLiteParameter>();
-                prmList.Add(new SQLiteParameter($"@{COL_ID}", obj.id));
-                prmList.Add(new SQLiteParameter($"@{COL_SUMMARY}", obj.summary.id));
-                prmList.Add(new SQLiteParameter($"@{COL_DATE}", obj.date.ToString("yyyy/MM/dd")));
-                prmList.Add(new SQLiteParameter($"@{COL_AMOUNT}", obj.amount));
-                prmList.Add(new SQLiteParameter($"@{COL_COMMENT}", obj.comment));
+                prmList.Add(new SQLiteParameter($"@{COL_ID}", null));
+                prmList.Add(new SQLiteParameter($"@{COL_SUMMARY}", obj.Summary.Id));
+                prmList.Add(new SQLiteParameter($"@{COL_DATE}", obj.Date.ToString("yyyy/MM/dd")));
+                prmList.Add(new SQLiteParameter($"@{COL_AMOUNT}", obj.Amount));
+                prmList.Add(new SQLiteParameter($"@{COL_COMMENT}", obj.Comment));
 
                 cmdList.Add(new SqliteUtility.Command(
                     sql.ToString(),
                     prmList));
             }
 
-            return SqliteUtility.executeNonQuery(cmdList);
+            int result = -1;
+            result = SqliteUtility.executeNonQuery(cmdList);
+            setTraceUsing(objCollection);
+            return result;
         }
 
-        /// <summary>
+        /// <Summary>
         /// レコード登録
-        /// </summary>
-        /// <param name="obj">登録対象アイテム</param>
+        /// </Summary>
+        /// <param Name="obj">登録対象アイテム</param>
         /// <returns>登録件数</returns>
         public int register(Business obj) {
             return register(new BusinessCollection() { obj });
         }
 
-        /// <summary>
+        /// <Summary>
         /// レコード更新
-        /// </summary>
-        /// <param name="objCollection">更新対象アイテムリスト</param>
+        /// </Summary>
+        /// <param Name="objCollection">更新対象アイテムリスト</param>
         /// <returns>更新件数</returns>
         public int update(BusinessCollection objCollection) {
             if(objCollection.Count == 0) {
@@ -151,66 +182,69 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
 
             foreach(Business obj in objCollection) {
                 List<SQLiteParameter> prmList = new List<SQLiteParameter>();
-                prmList.Add(new SQLiteParameter($"@{COL_ID}", obj.id));
-                prmList.Add(new SQLiteParameter($"@{COL_SUMMARY}", obj.summary.id));
-                prmList.Add(new SQLiteParameter($"@{COL_DATE}", obj.date.ToString("yyyy/MM/dd")));
-                prmList.Add(new SQLiteParameter($"@{COL_AMOUNT}", obj.amount));
-                prmList.Add(new SQLiteParameter($"@{COL_COMMENT}", obj.comment));
+                prmList.Add(new SQLiteParameter($"@{COL_ID}", obj.Id));
+                prmList.Add(new SQLiteParameter($"@{COL_SUMMARY}", obj.Summary.Id));
+                prmList.Add(new SQLiteParameter($"@{COL_DATE}", obj.Date.ToString("yyyy/MM/dd")));
+                prmList.Add(new SQLiteParameter($"@{COL_AMOUNT}", obj.Amount));
+                prmList.Add(new SQLiteParameter($"@{COL_COMMENT}", obj.Comment));
 
                 cmdList.Add(new SqliteUtility.Command(
                     sql.ToString(),
                     prmList));
             }
 
-            return SqliteUtility.executeNonQuery(cmdList);
+            int result = -1;
+            result = SqliteUtility.executeNonQuery(cmdList);
+            setTraceUsing(objCollection);
+            return result;
         }
 
-        /// <summary>
+        /// <Summary>
         /// レコード更新
-        /// </summary>
-        /// <param name="obj">更新対象アイテム</param>
+        /// </Summary>
+        /// <param Name="obj">更新対象アイテム</param>
         /// <returns>更新件数</returns>
         public int update(Business obj) {
             return update(new BusinessCollection() { obj });
         }
 
-        /// <summary>
+        /// <Summary>
         /// テーブル全件取得する
-        /// </summary>
+        /// </Summary>
         /// <returns>テーブル全件</returns>
         public BusinessCollection selectAll() {
             return selectWhereDateBetween(DateTime.MinValue, DateTime.MaxValue);
         }
 
-        /// <summary>
+        /// <Summary>
         /// 指定された摘要に紐づくレコードを取得する
-        /// </summary>
-        /// <param name="summaryCollection">指定する摘要</param>
+        /// </Summary>
+        /// <param Name="summaryCollection">指定する摘要</param>
         /// <returns>指定された摘要に紐づくレコード</returns>
         public BusinessCollection selectWhereSummaryIn(SummaryCollection summaryCollection) {
             BusinessCollection result = new BusinessCollection();
-            string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_SUMMARY}=@{COL_SUMMARY}";
+            string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_SUMMARY}=@{COL_SUMMARY} {ORDER}";
 
             foreach(Summary targetSummary in summaryCollection) {
                 result.AddRange(select(
                     new SqliteUtility.Command(
                         sql,
-                        new List<SQLiteParameter>() { new SQLiteParameter($"@{COL_SUMMARY}", targetSummary.id) })));
+                        new List<SQLiteParameter>() { new SQLiteParameter($"@{COL_SUMMARY}", targetSummary.Id) })));
             }
 
             return result;
         }
 
-        /// <summary>
+        /// <Summary>
         /// 指定された日付の範囲内のレコードを取得する
-        /// </summary>
-        /// <param name="start">開始日付</param>
-        /// <param name="end">終了日付</param>
+        /// </Summary>
+        /// <param Name="start">開始日付</param>
+        /// <param Name="end">終了日付</param>
         /// <returns>指定された日付の範囲内のレコード</returns>
         public BusinessCollection selectWhereDateBetween(DateTime start, DateTime end) {
             string startParam = "@start";
             string endParam = "@end";
-            string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_DATE} BETWEEN {startParam} and {endParam}";
+            string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_DATE} BETWEEN {startParam} and {endParam} {ORDER}";
 
             string dateFormat = "yyyy/MM/dd";
             List<SQLiteParameter> prmList = new List<SQLiteParameter>();

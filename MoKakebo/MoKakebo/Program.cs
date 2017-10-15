@@ -6,14 +6,14 @@ using System.Windows.Forms;
 
 namespace MoKakebo {
     static class Program {
-        /// <summary>
+        /// <Summary>
         /// アプリケーションのメイン エントリ ポイントです。
-        /// </summary>
+        /// </Summary>
         [STAThread]
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+            Application.Run(new NewBusiness());
         }
     }
 }

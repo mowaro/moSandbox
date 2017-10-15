@@ -11,9 +11,9 @@
 namespace MoKakebo.Properties {
 
 
-    /// <summary>
+    /// <Summary>
     ///   ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
-    /// </summary>
+    /// </Summary>
     // このクラスは StronglyTypedResourceBuilder クラスが ResGen
     // または Visual Studio のようなツールを使用して自動生成されました。
     // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
@@ -31,9 +31,9 @@ namespace MoKakebo.Properties {
         internal Resources() {
         }
 
-        /// <summary>
+        /// <Summary>
         ///   このクラスで使用されるキャッシュされた ResourceManager インスタンスを返します。
-        /// </summary>
+        /// </Summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
@@ -45,10 +45,10 @@ namespace MoKakebo.Properties {
             }
         }
 
-        /// <summary>
+        /// <Summary>
         ///   厳密に型指定されたこのリソース クラスを使用して、すべての検索リソースに対し、
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
-        /// </summary>
+        /// </Summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture {
             get {

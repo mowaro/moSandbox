@@ -4,29 +4,29 @@ using MoKakebo.Dao.Interface;
 using MoKakebo.Dao.RDB.SQLiteImplement;
 
 namespace MoKakebo.Dao {
-    /// <summary>
+    /// <Summary>
     /// DAOファクトリ
-    /// </summary>
+    /// </Summary>
     public static class Factory {
-        /// <summary>
+        /// <Summary>
         /// 取引DAO取得
-        /// </summary>
+        /// </Summary>
         /// <returns></returns>
         public static IBusinessDao getBusinessDao() {
-            throw new NotImplementedException();
+            return new BusinessDaoImpl();
         }
 
-        /// <summary>
+        /// <Summary>
         /// 摘要DAO取得
-        /// </summary>
+        /// </Summary>
         /// <returns></returns>
         public static ISummaryDao getSummaryDao() {
-            throw new NotImplementedException();
+            return new SummaryDaoImpl();
         }
 
-        /// <summary>
+        /// <Summary>
         /// 勘定科目DAO取得
-        /// </summary>
+        /// </Summary>
         /// <returns></returns>
         public static ISubaccountDao getSubaccountDao() {
             return new SubaccountDaoImpl();

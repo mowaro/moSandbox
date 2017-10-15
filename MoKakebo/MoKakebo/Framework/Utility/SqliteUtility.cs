@@ -1,25 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using MoKakebo.Const;
 
 namespace MoKakebo.Framework.Utility {
-    /// <summary>
+    /// <Summary>
     /// SQLiteユーティリティ
-    /// </summary>
+    /// </Summary>
     class SqliteUtility {
-        /// <summary>
+        /// <Summary>
         /// SQLiteコネクションを取得する
-        /// </summary>
+        /// </Summary>
         /// <returns>SQLiteコネクション</returns>
         public static SQLiteConnection getConnection() {
             return new SQLiteConnection("Data Source=" + Config.SQLITE_PATH);
         }
 
-        /// <summary>
+        /// <Summary>
         /// SQLを実行する
-        /// </summary>
-        /// <param name="cmdList">SQLiteコマンドリスト</param>
+        /// </Summary>
+        /// <param Name="cmdList">SQLiteコマンドリスト</param>
         /// <returns>コマンド実行により、影響があった行数</returns>
         public static int executeNonQuery(List<Command> cmdList) {
             int result = -1;
@@ -40,10 +41,10 @@ namespace MoKakebo.Framework.Utility {
             return result;
         }
 
-        /// <summary>
+        /// <Summary>
         /// SQLを実行し、抽出結果を取得する
-        /// </summary>
-        /// <param name="cmd">SQLiteコマンド</param>
+        /// </Summary>
+        /// <param Name="cmd">SQLiteコマンド</param>
         /// <returns>抽出結果</returns>
         public static DataTable select(Command cmd) {
             DataTable result = new DataTable();
@@ -58,27 +59,27 @@ namespace MoKakebo.Framework.Utility {
             return result;
         }
 
-        /// <summary>
+        /// <Summary>
         /// SQLiteコマンド
-        /// </summary>
+        /// </Summary>
         public class Command {
             private string command;
             private List<SQLiteParameter> paramList;
 
-            /// <summary>
+            /// <Summary>
             /// コンストラクタ
-            /// </summary>
-            /// <param name="command">SQL（パラメタ付）</param>
-            /// <param name="paramList">SQLiteパラメタリスト</param>
+            /// </Summary>
+            /// <param Name="command">SQL（パラメタ付）</param>
+            /// <param Name="paramList">SQLiteパラメタリスト</param>
             public Command(string command, List<SQLiteParameter> paramList) {
                 this.command = command;
                 this.paramList = paramList;
             }
 
-            /// <summary>
+            /// <Summary>
             /// SQLiteコマンド生成
-            /// </summary>
-            /// <param name="con">SQLiteコネクション</param>
+            /// </Summary>
+            /// <param Name="con">SQLiteコネクション</param>
             /// <returns>SQLiteコマンド</returns>
             public SQLiteCommand createCommand(SQLiteConnection con) {
                 SQLiteCommand cmd = con.CreateCommand();
@@ -88,19 +89,34 @@ namespace MoKakebo.Framework.Utility {
             }
         }
 
-        /// <summary>
+        /// <Summary>
         /// データ行コンバータ
-        /// </summary>
+        /// </Summary>
         public static class DataRowConverter {
-            /// <summary>
+            /// <Summary>
             /// DataRowから値を取得する
-            /// </summary>
-            /// <typeparam name="T">変換する型</typeparam>
-            /// <param name="dr">DataRow</param>
-            /// <param name="columnName">カラム名</param>
+            /// </Summary>
+            /// <typeparam Name="T">変換する型</typeparam>
+            /// <param Name="dr">DataRow</param>
+            /// <param Name="columnName">カラム名</param>
             /// <returns>値</returns>
             public static T getValue<T>(DataRow dr, string columnName) {
-                return dr.IsNull(columnName) ? default(T) : dr.Field<T>(columnName);
+                T result = default(T);
+
+                if(dr.IsNull(columnName) || string.IsNullOrWhiteSpace(dr[columnName].ToString())) {
+                    result = default(T);
+                }
+                else if(typeof(T).IsPrimitive) {
+                    result = dr.Field<T>(columnName);
+                }
+                else if(typeof(T).Equals(typeof(string))) {
+                    result = dr.Field<T>(columnName);
+                }
+                else {
+                    result = (T)typeof(T).InvokeMember("Parse", System.Reflection.BindingFlags.InvokeMethod, null, null, new object[] { dr[columnName] });
+                }
+
+                return result;
             }
         }
 

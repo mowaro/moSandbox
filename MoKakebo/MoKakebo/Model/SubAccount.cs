@@ -1,49 +1,53 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using MoKakebo.Framework.Model.Interface;
+using MoKakebo.Const;
 
 namespace MoKakebo.Model {
-    /// <summary>
+    /// <Summary>
     /// 勘定科目
-    /// </summary>
-    public class Subaccount : IHasIdObject{
-        /// <summary>ID</summary>
-        public long id { get; protected set; }
-        /// <summary>名称</summary>
-        public string name { get; protected set; }
-        /// <summary>科目</summary>
-        public Const.Enum.Account account { get; protected set; }
-        /// <summary>最終使用日</summary>
-        public DateTime latestUsed { get; protected set; }
+    /// </Summary>
+    public class Subaccount : IHasIdName, IHasLatestUsed{
+        /// <Summary>ID</Summary>
+        public long Id { get; protected set; }
+        /// <Summary>名称</Summary>
+        public string Name { get; protected set; }
+        /// <Summary>科目</Summary>
+        public Account Account { get; protected set; }
+        /// <Summary>最終使用日</Summary>
+        public DateTime LatestUsed { get; protected set; }
 
-        /// <summary>
+        /// <Summary>
         /// コンストラクタ
-        /// </summary>
-        /// <param name="id">ID</param>
-        /// <param name="name">名称</param>
-        /// <param name="account">科目</param>
-        /// <param name="latestUsed">最終使用日</param>
-        public Subaccount(long id, string name, Const.Enum.Account account, DateTime latestUsed) {
-            this.id = id;
-            this.name = name;
-            this.account = account;
-            this.latestUsed = latestUsed;
+        /// </Summary>
+        /// <param Name="id">ID</param>
+        /// <param Name="Name">名称</param>
+        /// <param Name="Account">科目</param>
+        /// <param Name="LatestUsed">最終使用日</param>
+        public Subaccount(long id, string name, Account account, DateTime latestUsed) {
+            this.Id = id;
+            this.Name = name;
+            this.Account = account;
+            this.LatestUsed = latestUsed;
         }
 
-        #region IHasIdObject implement
-        public bool Equals(IHasIdObject obj) {
-            return this.Equals(obj.id);
+        /// <Summary>
+        /// コンストラクタ
+        /// </Summary>
+        public Subaccount() {
+            this.Id = DefaultValue.LONG;
+            this.Name = DefaultValue.STRING;
+            this.Account = new Account(Account.VALUE_DEFAULT);
+            this.LatestUsed = DefaultValue.DATE;
         }
 
-        public bool Equals(long id) {
-            return this.id.Equals(id);
+        #region IHasIdName implement
+        public bool Equals(IHasId obj) {
+            return this.Equals(obj.Id);
         }
 
         public override int GetHashCode() {
-            return this.id.GetHashCode();
+            return this.Id.GetHashCode();
         }
-
         #endregion
 
     }

@@ -4,70 +4,70 @@ using System.Collections.Generic;
 using MoKakebo.Model;
 
 namespace MoKakebo.Dao.Interface {
-    /// <summary>
+    /// <Summary>
     /// 取引DAOインタフェース
-    /// </summary>
+    /// </Summary>
     public interface IBusinessDao {
-        /// <summary>
+        /// <Summary>
         /// レコード登録
-        /// </summary>
-        /// <param name="obj">登録対象アイテム</param>
+        /// </Summary>
+        /// <param Name="obj">登録対象アイテム</param>
         /// <returns>登録件数</returns>
         int register(Business obj);
 
-        /// <summary>
+        /// <Summary>
         /// レコード登録
-        /// </summary>
-        /// <param name="objCollection">登録対象アイテムリスト</param>
+        /// </Summary>
+        /// <param Name="objCollection">登録対象アイテムリスト</param>
         /// <returns>登録件数</returns>
         int register(BusinessCollection objCollection);
 
-        /// <summary>
+        /// <Summary>
         /// レコード削除
-        /// </summary>
-        /// <param name="id">削除対象ID</param>
+        /// </Summary>
+        /// <param Name="id">削除対象ID</param>
         /// <returns>削除件数</returns>
         int delete(long id);
 
-        /// <summary>
+        /// <Summary>
         /// レコード削除
-        /// </summary>
-        /// <param name="idList">削除対象IDリスト</param>
+        /// </Summary>
+        /// <param Name="idList">削除対象IDリスト</param>
         /// <returns>削除件数</returns>
         int delete(List<long> idList);
 
-        /// <summary>
+        /// <Summary>
         /// レコード更新
-        /// </summary>
-        /// <param name="obj">更新対象アイテム</param>
+        /// </Summary>
+        /// <param Name="obj">更新対象アイテム</param>
         /// <returns>更新件数</returns>
         int update(Business obj);
 
-        /// <summary>
+        /// <Summary>
         /// レコード更新
-        /// </summary>
-        /// <param name="objCollection">更新対象アイテムリスト</param>
+        /// </Summary>
+        /// <param Name="objCollection">更新対象アイテムリスト</param>
         /// <returns>更新件数</returns>
         int update(BusinessCollection objCollection);
 
-        /// <summary>
+        /// <Summary>
         /// テーブル全件取得する
-        /// </summary>
+        /// </Summary>
         /// <returns>テーブル全件</returns>
         BusinessCollection selectAll();
 
-        /// <summary>
+        /// <Summary>
         /// 指定された日付の範囲内のレコードを取得する
-        /// </summary>
-        /// <param name="start">開始日付</param>
-        /// <param name="end">終了日付</param>
+        /// </Summary>
+        /// <param Name="start">開始日付</param>
+        /// <param Name="end">終了日付</param>
         /// <returns>指定された日付の範囲内のレコード</returns>
         BusinessCollection selectWhereDateBetween(DateTime start, DateTime end);
 
-        /// <summary>
+        /// <Summary>
         /// 指定された摘要に紐づくレコードを取得する
-        /// </summary>
-        /// <param name="summaryCollection">指定する摘要</param>
+        /// </Summary>
+        /// <param Name="summaryCollection">指定する摘要</param>
         /// <returns>指定された摘要に紐づくレコード</returns>
         BusinessCollection selectWhereSummaryIn(SummaryCollection summaryCollection);
     }

@@ -1,75 +1,76 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using MoKakebo.Const;
 using MoKakebo.Model;
 
 namespace MoKakebo.Dao.Interface {
-    /// <summary>
+    /// <Summary>
     /// 勘定科目DAOインタフェース
-    /// </summary>
+    /// </Summary>
     public interface ISubaccountDao {
 
-        /// <summary>
+        /// <Summary>
         /// レコード登録
-        /// </summary>
-        /// <param name="obj">登録対象アイテム</param>
+        /// </Summary>
+        /// <param Name="obj">登録対象アイテム</param>
         /// <returns>登録件数</returns>
         int register(Subaccount obj);
 
-        /// <summary>
+        /// <Summary>
         /// レコード登録
-        /// </summary>
-        /// <param name="objCollection">登録対象アイテムリスト</param>
+        /// </Summary>
+        /// <param Name="objCollection">登録対象アイテムリスト</param>
         /// <returns>登録件数</returns>
         int register(SubaccountCollection objCollection);
 
-        /// <summary>
+        /// <Summary>
         /// レコード削除
-        /// </summary>
-        /// <param name="id">削除対象ID</param>
+        /// </Summary>
+        /// <param Name="id">削除対象ID</param>
         /// <returns>削除件数</returns>
         int delete(long id);
 
-        /// <summary>
+        /// <Summary>
         /// レコード削除
-        /// </summary>
-        /// <param name="idList">削除対象IDリスト</param>
+        /// </Summary>
+        /// <param Name="idList">削除対象IDリスト</param>
         /// <returns>削除件数</returns>
         int delete(List<long> idList);
 
-        /// <summary>
+        /// <Summary>
         /// レコード更新
-        /// </summary>
-        /// <param name="obj">更新対象アイテム</param>
+        /// </Summary>
+        /// <param Name="obj">更新対象アイテム</param>
         /// <returns>更新件数</returns>
         int update(Subaccount obj);
 
-        /// <summary>
+        /// <Summary>
         /// レコード更新
-        /// </summary>
-        /// <param name="objCollection">更新対象アイテムリスト</param>
+        /// </Summary>
+        /// <param Name="objCollection">更新対象アイテムリスト</param>
         /// <returns>更新件数</returns>
         int update(SubaccountCollection objCollection);
 
-        /// <summary>
+        /// <Summary>
         /// テーブル全件取得する
-        /// </summary>
+        /// </Summary>
         /// <returns>テーブル全件</returns>
         SubaccountCollection selectAll();
 
-        /// <summary>
+        /// <Summary>
         /// 指定された日付の範囲内のレコードを取得する
-        /// </summary>
-        /// <param name="start">開始日付</param>
-        /// <param name="end">終了日付</param>
+        /// </Summary>
+        /// <param Name="start">開始日付</param>
+        /// <param Name="end">終了日付</param>
         /// <returns>指定された日付の範囲内のレコード</returns>
         SubaccountCollection selectWhereLatestDateBetween(DateTime start, DateTime end);
 
-        /// <summary>
+        /// <Summary>
         /// 指定された科目に紐づくレコードを取得する
-        /// </summary>
-        /// <param name="accountCollection">指定する科目</param>
+        /// </Summary>
+        /// <param Name="accountCollection">指定する科目</param>
         /// <returns>指定された科目に紐づくレコード</returns>
-        SubaccountCollection selectWhereAccountIn(List<Const.Enum.Account> accountCollection);
+        SubaccountCollection selectWhereAccountIn(List<Account> accountCollection);
     }
 }

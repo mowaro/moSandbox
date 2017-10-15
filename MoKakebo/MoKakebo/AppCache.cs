@@ -8,54 +8,65 @@ using MoKakebo.Dao.Interface;
 using MoKakebo.Model;
 
 namespace MoKakebo {
-    /// <summary>
+    /// <Summary>
     /// アプリケーションキャッシュ
-    /// </summary>
+    /// </Summary>
     public sealed class AppCache {
         #region Singleton Member
-        /// <summary>アプリケーションキャッシュ</summary>
-        private static AppCache cache = new AppCache();
+        /// <Summary>アプリケーションキャッシュ</Summary>
+        private static AppCache cache;
 
-        /// <summary>コンストラクタ</summary>
+        /// <Summary>コンストラクタ</Summary>
         private AppCache() {
-            reloadSubaccountMaster();
-            reloadSummaryMaster();
         }
 
-        /// <summary>
+        /// <Summary>
         /// アプリケーションキャッシュ取得
-        /// </summary>
+        /// </Summary>
         /// <returns>アプリケーションキャッシュ</returns>
-        public static AppCache getInstance() { return cache; }
+        public static AppCache getInstance() {
+            if (cache == null) {
+                cache = new AppCache();
+                reloadSubaccountMaster();
+                reloadSummaryMaster();
+            }
+            return cache;
+        }
         #endregion
 
         #region Subaccount Master
-        /// <summary>勘定科目マスタ</summary>
-        private SubaccountCollection subaccountMaster = new SubaccountCollection();
+        /// <Summary>勘定科目マスタ</Summary>
+        private static SubaccountCollection subaccountMaster;
 
-        /// <summary>勘定科目マスタ取得</summary>
+        /// <Summary>勘定科目マスタ取得</Summary>
         /// <returns>勘定科目マスタ</returns>
-        public SubaccountCollection getSubaccountMaster() { return subaccountMaster; }
+        public static SubaccountCollection getSubaccountMaster() {
+            AppCache.getInstance();
+            return subaccountMaster;
+        }
         
-        /// <summary>勘定科目マスタ再読み込み</summary>
-        public void reloadSubaccountMaster() {
+        /// <Summary>勘定科目マスタ再読み込み</Summary>
+        public static void reloadSubaccountMaster() {
             ISubaccountDao subaccountDao = Factory.getSubaccountDao();
-            this.subaccountMaster = subaccountDao.selectAll();
+            subaccountMaster = subaccountDao.selectAll();
         }
         #endregion
 
         #region Summary Master
-        /// <summary>摘要マスタ</summary>
-        private SummaryCollection summaryMaster = new SummaryCollection();
+        /// <Summary>摘要マスタ</Summary>
+        private static SummaryCollection summaryMaster;
 
-        /// <summary>摘要マスタ取得</summary>
+        /// <Summary>摘要マスタ取得</Summary>
         /// <returns>摘要マスタ</returns>
-        public SummaryCollection getSummaryMaster() { return summaryMaster; }
+        public static SummaryCollection getSummaryMaster() {
+            AppCache.getInstance();
+            return summaryMaster;
+        }
         
-        /// <summary>摘要マスタ再読み込み</summary>
-        public void reloadSummaryMaster() {
+        /// <Summary>摘要マスタ再読み込み</Summary>
+        public static void reloadSummaryMaster() {
             ISummaryDao summaryDao = Factory.getSummaryDao();
-            this.summaryMaster = summaryDao.selectAll();
+            summaryMaster = summaryDao.selectAll();
         }
         #endregion
     }

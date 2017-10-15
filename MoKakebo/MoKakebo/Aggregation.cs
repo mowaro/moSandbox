@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MoKakebo {
-    public partial class Main : Form {
-        public Main() {
+    public partial class Aggregation : Form {
+        public Aggregation() {
             InitializeComponent();
         }
     }
