@@ -95,6 +95,7 @@
     <Compile Include="Framework\Model\Abstract\HasIdList.cs" />
     <Compile Include="Framework\Model\Interface\IHasLatestUsed.cs" />
     <Compile Include="Framework\Utility\SqliteUtility.cs" />
+    <Compile Include="Model\Month.cs" />
     <Compile Include="NewBusiness.cs">
       <SubType>Form</SubType>
     </Compile>

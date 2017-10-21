@@ -23,29 +23,22 @@
         /// the contents of this method with the code editor.
         /// </Summary>
         private void InitializeComponent() {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.grpAggregate = new System.Windows.Forms.GroupBox();
-            this.lblCurrentMonth = new System.Windows.Forms.Label();
-            this.lblNextMonth = new System.Windows.Forms.Label();
-            this.lblPrevMonth = new System.Windows.Forms.Label();
             this.cht = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.lstTable = new System.Windows.Forms.ListView();
-            this.date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.profitLoss = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.account = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.subaccount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.amount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.dtpCurrentMonth = new System.Windows.Forms.DateTimePicker();
+            this.cmbGroup = new System.Windows.Forms.ComboBox();
             this.grpAggregate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cht)).BeginInit();
             this.SuspendLayout();
             // 
             // grpAggregate
             // 
-            this.grpAggregate.Controls.Add(this.lblCurrentMonth);
-            this.grpAggregate.Controls.Add(this.lblNextMonth);
-            this.grpAggregate.Controls.Add(this.lblPrevMonth);
+            this.grpAggregate.Controls.Add(this.cmbGroup);
+            this.grpAggregate.Controls.Add(this.dtpCurrentMonth);
             this.grpAggregate.Controls.Add(this.cht);
             this.grpAggregate.Controls.Add(this.lstTable);
             this.grpAggregate.Location = new System.Drawing.Point(12, 12);
@@ -55,88 +48,48 @@
             this.grpAggregate.TabStop = false;
             this.grpAggregate.Text = "集計";
             // 
-            // lblCurrentMonth
-            // 
-            this.lblCurrentMonth.AutoSize = true;
-            this.lblCurrentMonth.Location = new System.Drawing.Point(89, 15);
-            this.lblCurrentMonth.Name = "lblCurrentMonth";
-            this.lblCurrentMonth.Size = new System.Drawing.Size(69, 12);
-            this.lblCurrentMonth.TabIndex = 9;
-            this.lblCurrentMonth.Text = "2017年 09月";
-            // 
-            // lblNextMonth
-            // 
-            this.lblNextMonth.AutoSize = true;
-            this.lblNextMonth.Location = new System.Drawing.Point(164, 15);
-            this.lblNextMonth.Name = "lblNextMonth";
-            this.lblNextMonth.Size = new System.Drawing.Size(29, 12);
-            this.lblNextMonth.TabIndex = 8;
-            this.lblNextMonth.Text = "＞＞";
-            // 
-            // lblPrevMonth
-            // 
-            this.lblPrevMonth.AutoSize = true;
-            this.lblPrevMonth.Location = new System.Drawing.Point(54, 15);
-            this.lblPrevMonth.Name = "lblPrevMonth";
-            this.lblPrevMonth.Size = new System.Drawing.Size(29, 12);
-            this.lblPrevMonth.TabIndex = 7;
-            this.lblPrevMonth.Text = "＜＜";
-            // 
             // cht
             // 
-            chartArea2.Name = "ChartArea1";
-            this.cht.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.cht.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.cht.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.cht.Legends.Add(legend1);
             this.cht.Location = new System.Drawing.Point(282, 44);
             this.cht.Name = "cht";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.cht.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.cht.Series.Add(series1);
             this.cht.Size = new System.Drawing.Size(242, 266);
             this.cht.TabIndex = 1;
             this.cht.Text = "chart1";
             // 
             // lstTable
             // 
-            this.lstTable.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.date,
-            this.profitLoss,
-            this.account,
-            this.subaccount,
-            this.amount});
-            this.lstTable.Location = new System.Drawing.Point(6, 44);
+            this.lstTable.Location = new System.Drawing.Point(6, 43);
             this.lstTable.Name = "lstTable";
-            this.lstTable.Size = new System.Drawing.Size(270, 266);
+            this.lstTable.Size = new System.Drawing.Size(270, 267);
             this.lstTable.TabIndex = 0;
             this.lstTable.UseCompatibleStateImageBehavior = false;
+            this.lstTable.View = System.Windows.Forms.View.Details;
             // 
-            // Date
+            // dtpCurrentMonth
             // 
-            this.date.DisplayIndex = 3;
-            this.date.Text = "日付";
+            this.dtpCurrentMonth.CustomFormat = "yyyy年 MM月";
+            this.dtpCurrentMonth.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpCurrentMonth.Location = new System.Drawing.Point(6, 18);
+            this.dtpCurrentMonth.Name = "dtpCurrentMonth";
+            this.dtpCurrentMonth.Size = new System.Drawing.Size(112, 19);
+            this.dtpCurrentMonth.TabIndex = 10;
             // 
-            // profitLoss
+            // cmbGroup
             // 
-            this.profitLoss.DisplayIndex = 0;
-            this.profitLoss.Text = "収支";
-            // 
-            // Account
-            // 
-            this.account.DisplayIndex = 1;
-            this.account.Text = "科目1";
-            // 
-            // Subaccount
-            // 
-            this.subaccount.DisplayIndex = 2;
-            this.subaccount.Text = "科目2";
-            // 
-            // Amount
-            // 
-            this.amount.Text = "金額";
-            this.amount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cmbGroup.FormattingEnabled = true;
+            this.cmbGroup.Location = new System.Drawing.Point(124, 17);
+            this.cmbGroup.Name = "cmbGroup";
+            this.cmbGroup.Size = new System.Drawing.Size(198, 20);
+            this.cmbGroup.TabIndex = 11;
             // 
             // Aggregation
             // 
@@ -147,7 +100,6 @@
             this.Name = "Aggregation";
             this.Text = "Aggregation";
             this.grpAggregate.ResumeLayout(false);
-            this.grpAggregate.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cht)).EndInit();
             this.ResumeLayout(false);
 
@@ -156,15 +108,9 @@
         #endregion
 
         private System.Windows.Forms.GroupBox grpAggregate;
-        private System.Windows.Forms.Label lblCurrentMonth;
-        private System.Windows.Forms.Label lblNextMonth;
-        private System.Windows.Forms.Label lblPrevMonth;
         private System.Windows.Forms.DataVisualization.Charting.Chart cht;
         private System.Windows.Forms.ListView lstTable;
-        private System.Windows.Forms.ColumnHeader date;
-        private System.Windows.Forms.ColumnHeader profitLoss;
-        private System.Windows.Forms.ColumnHeader account;
-        private System.Windows.Forms.ColumnHeader subaccount;
-        private System.Windows.Forms.ColumnHeader amount;
+        private System.Windows.Forms.DateTimePicker dtpCurrentMonth;
+        private System.Windows.Forms.ComboBox cmbGroup;
     }
 }

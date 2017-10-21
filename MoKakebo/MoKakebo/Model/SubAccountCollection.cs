@@ -40,6 +40,15 @@ namespace MoKakebo.Model {
         }
 
         /// <Summary>
+        /// ID 昇順ソート用比較クラス
+        /// </Summary>
+        public class IdAscSorter : IComparer<Subaccount> {
+            public int Compare(Subaccount x, Subaccount y) {
+                return x.Id.CompareTo(y.Id);
+            }
+        }
+
+        /// <Summary>
         /// 最終使用日 降順ソート用比較クラス
         /// </Summary>
         public class LatestUsedDateDescSorter : IComparer<Subaccount> {

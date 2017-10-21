@@ -184,6 +184,7 @@
             this.btnHistory.TabIndex = 12;
             this.btnHistory.Text = "履歴...(&H)";
             this.btnHistory.UseVisualStyleBackColor = true;
+            this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
             // 
             // button1
             // 

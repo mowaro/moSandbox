@@ -78,6 +78,11 @@ namespace MoKakebo {
             TextBox target = (TextBox)sender;
             target.Text = string.Format("{0:C}", amount);
         }
+
+        private void btnHistory_Click(object sender, EventArgs e) {
+            Aggregation dlg = new Aggregation();
+            dlg.Show(this);
+        }
         #endregion
 
         #region private method
