@@ -62,13 +62,22 @@ namespace MoKakebo.Dao.Interface {
         /// <param Name="start">開始日付</param>
         /// <param Name="end">終了日付</param>
         /// <returns>指定された日付の範囲内のレコード</returns>
-        BusinessCollection selectWhereDateBetween(DateTime start, DateTime end);
+        BusinessCollection select(DateTime start, DateTime end);
 
         /// <Summary>
         /// 指定された摘要に紐づくレコードを取得する
         /// </Summary>
         /// <param Name="summaryCollection">指定する摘要</param>
         /// <returns>指定された摘要に紐づくレコード</returns>
-        BusinessCollection selectWhereSummaryIn(SummaryCollection summaryCollection);
+        BusinessCollection select(SummaryCollection summaryCollection);
+
+        /// <Summary>
+        /// 指定された期間・摘要に紐づくレコードを取得する
+        /// </Summary>
+        /// <param Name="start">開始日付</param>
+        /// <param Name="end">終了日付</param>
+        /// <param Name="summaryCollection">指定する摘要</param>
+        /// <returns>指定された期間・摘要に紐づくレコード</returns>
+        BusinessCollection select(DateTime start, DateTime end, SummaryCollection summaryCollection);
     }
 }

@@ -23,14 +23,19 @@
         /// the contents of this method with the code editor.
         /// </Summary>
         private void InitializeComponent() {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.grpAggregate = new System.Windows.Forms.GroupBox();
-            this.cht = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.lstTable = new System.Windows.Forms.ListView();
-            this.dtpCurrentMonth = new System.Windows.Forms.DateTimePicker();
             this.cmbGroup = new System.Windows.Forms.ComboBox();
+            this.dtpCurrentMonth = new System.Windows.Forms.DateTimePicker();
+            this.cht = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.lstHistory = new System.Windows.Forms.ListView();
+            this.colDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colSubaccount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colSummary = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colAmount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colComment = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.grpAggregate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cht)).BeginInit();
             this.SuspendLayout();
@@ -40,7 +45,7 @@
             this.grpAggregate.Controls.Add(this.cmbGroup);
             this.grpAggregate.Controls.Add(this.dtpCurrentMonth);
             this.grpAggregate.Controls.Add(this.cht);
-            this.grpAggregate.Controls.Add(this.lstTable);
+            this.grpAggregate.Controls.Add(this.lstHistory);
             this.grpAggregate.Location = new System.Drawing.Point(12, 12);
             this.grpAggregate.Name = "grpAggregate";
             this.grpAggregate.Size = new System.Drawing.Size(534, 316);
@@ -48,31 +53,14 @@
             this.grpAggregate.TabStop = false;
             this.grpAggregate.Text = "集計";
             // 
-            // cht
+            // cmbGroup
             // 
-            chartArea1.Name = "ChartArea1";
-            this.cht.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.cht.Legends.Add(legend1);
-            this.cht.Location = new System.Drawing.Point(282, 44);
-            this.cht.Name = "cht";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.cht.Series.Add(series1);
-            this.cht.Size = new System.Drawing.Size(242, 266);
-            this.cht.TabIndex = 1;
-            this.cht.Text = "chart1";
-            // 
-            // lstTable
-            // 
-            this.lstTable.Location = new System.Drawing.Point(6, 43);
-            this.lstTable.Name = "lstTable";
-            this.lstTable.Size = new System.Drawing.Size(270, 267);
-            this.lstTable.TabIndex = 0;
-            this.lstTable.UseCompatibleStateImageBehavior = false;
-            this.lstTable.View = System.Windows.Forms.View.Details;
+            this.cmbGroup.FormattingEnabled = true;
+            this.cmbGroup.Location = new System.Drawing.Point(124, 17);
+            this.cmbGroup.Name = "cmbGroup";
+            this.cmbGroup.Size = new System.Drawing.Size(198, 20);
+            this.cmbGroup.TabIndex = 11;
+            this.cmbGroup.SelectedIndexChanged += new System.EventHandler(this.cmbGroup_SelectedIndexChanged);
             // 
             // dtpCurrentMonth
             // 
@@ -82,14 +70,59 @@
             this.dtpCurrentMonth.Name = "dtpCurrentMonth";
             this.dtpCurrentMonth.Size = new System.Drawing.Size(112, 19);
             this.dtpCurrentMonth.TabIndex = 10;
+            this.dtpCurrentMonth.ValueChanged += new System.EventHandler(this.dtpCurrentMonth_ValueChanged);
             // 
-            // cmbGroup
+            // cht
             // 
-            this.cmbGroup.FormattingEnabled = true;
-            this.cmbGroup.Location = new System.Drawing.Point(124, 17);
-            this.cmbGroup.Name = "cmbGroup";
-            this.cmbGroup.Size = new System.Drawing.Size(198, 20);
-            this.cmbGroup.TabIndex = 11;
+            chartArea3.Name = "ChartArea1";
+            this.cht.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.cht.Legends.Add(legend3);
+            this.cht.Location = new System.Drawing.Point(282, 44);
+            this.cht.Name = "cht";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.cht.Series.Add(series3);
+            this.cht.Size = new System.Drawing.Size(242, 266);
+            this.cht.TabIndex = 1;
+            this.cht.Text = "chart1";
+            // 
+            // lstHistory
+            // 
+            this.lstHistory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colDate,
+            this.colSubaccount,
+            this.colSummary,
+            this.colAmount,
+            this.colComment});
+            this.lstHistory.Location = new System.Drawing.Point(6, 43);
+            this.lstHistory.Name = "lstHistory";
+            this.lstHistory.Size = new System.Drawing.Size(270, 267);
+            this.lstHistory.TabIndex = 0;
+            this.lstHistory.UseCompatibleStateImageBehavior = false;
+            this.lstHistory.View = System.Windows.Forms.View.Details;
+            // 
+            // colDate
+            // 
+            this.colDate.Text = "日付";
+            // 
+            // colSubaccount
+            // 
+            this.colSubaccount.Text = "勘定科目";
+            // 
+            // colSummary
+            // 
+            this.colSummary.Text = "摘要";
+            // 
+            // colAmount
+            // 
+            this.colAmount.Text = "金額";
+            // 
+            // colComment
+            // 
+            this.colComment.Text = "コメント";
             // 
             // Aggregation
             // 
@@ -109,8 +142,13 @@
 
         private System.Windows.Forms.GroupBox grpAggregate;
         private System.Windows.Forms.DataVisualization.Charting.Chart cht;
-        private System.Windows.Forms.ListView lstTable;
+        private System.Windows.Forms.ListView lstHistory;
         private System.Windows.Forms.DateTimePicker dtpCurrentMonth;
         private System.Windows.Forms.ComboBox cmbGroup;
+        private System.Windows.Forms.ColumnHeader colDate;
+        private System.Windows.Forms.ColumnHeader colSubaccount;
+        private System.Windows.Forms.ColumnHeader colSummary;
+        private System.Windows.Forms.ColumnHeader colAmount;
+        private System.Windows.Forms.ColumnHeader colComment;
     }
 }

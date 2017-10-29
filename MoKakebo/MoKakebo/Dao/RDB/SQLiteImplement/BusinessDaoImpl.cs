@@ -213,7 +213,7 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
         /// </Summary>
         /// <returns>テーブル全件</returns>
         public BusinessCollection selectAll() {
-            return selectWhereDateBetween(DateTime.MinValue, DateTime.MaxValue);
+            return select(DateTime.MinValue, DateTime.MaxValue);
         }
 
         /// <Summary>
@@ -221,7 +221,7 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
         /// </Summary>
         /// <param Name="summaryCollection">指定する摘要</param>
         /// <returns>指定された摘要に紐づくレコード</returns>
-        public BusinessCollection selectWhereSummaryIn(SummaryCollection summaryCollection) {
+        public BusinessCollection select(SummaryCollection summaryCollection) {
             BusinessCollection result = new BusinessCollection();
             string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_SUMMARY}=@{COL_SUMMARY} {ORDER}";
 
@@ -241,7 +241,7 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
         /// <param Name="start">開始日付</param>
         /// <param Name="end">終了日付</param>
         /// <returns>指定された日付の範囲内のレコード</returns>
-        public BusinessCollection selectWhereDateBetween(DateTime start, DateTime end) {
+        public BusinessCollection select(DateTime start, DateTime end) {
             string startParam = "@start";
             string endParam = "@end";
             string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_DATE} BETWEEN {startParam} and {endParam} {ORDER}";
@@ -253,6 +253,36 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
 
             return select(new SqliteUtility.Command(sql, prmList));
         }
+
+        /// <Summary>
+        /// 指定された期間・摘要に紐づくレコードを取得する
+        /// </Summary>
+        /// <param Name="start">開始日付</param>
+        /// <param Name="end">終了日付</param>
+        /// <param Name="summaryCollection">指定する摘要</param>
+        /// <returns>指定された期間・摘要に紐づくレコード</returns>
+        public BusinessCollection select(DateTime start, DateTime end, SummaryCollection summaryCollection) {
+            BusinessCollection result = new BusinessCollection();
+            string startParam = "@start";
+            string endParam = "@end";
+            string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_DATE} BETWEEN {startParam} and {endParam} and {COL_SUMMARY}=@{COL_SUMMARY} {ORDER}";
+
+            string dateFormat = "yyyy/MM/dd";
+            List<SQLiteParameter> prmDate = new List<SQLiteParameter>();
+            prmDate.Add(new SQLiteParameter(startParam, start.ToString(dateFormat)));
+            prmDate.Add(new SQLiteParameter(endParam, end.ToString(dateFormat)));
+
+            foreach(Summary targetSummary in summaryCollection) {
+                List<SQLiteParameter> prms = new List<SQLiteParameter>(prmDate);
+                prms.Add(new SQLiteParameter($"@{COL_SUMMARY}", targetSummary.Id));
+
+                result.AddRange(select(new SqliteUtility.Command(sql, prms)));
+            }
+
+            return result;
+
+        }
+
 
         #endregion
     }

@@ -43,7 +43,7 @@ namespace MoKakebo.Model {
         /// </summary>
         /// <returns>月の末日</returns>
         public DateTime getLastDay() {
-            return new DateTime(year, month + 1, -1);
+            return getFirstDay().AddMonths(1).AddDays(-1);
         }
 
         /// <summary>

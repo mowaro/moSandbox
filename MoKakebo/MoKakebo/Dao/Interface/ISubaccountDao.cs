@@ -64,13 +64,13 @@ namespace MoKakebo.Dao.Interface {
         /// <param Name="start">開始日付</param>
         /// <param Name="end">終了日付</param>
         /// <returns>指定された日付の範囲内のレコード</returns>
-        SubaccountCollection selectWhereLatestDateBetween(DateTime start, DateTime end);
+        SubaccountCollection select(DateTime start, DateTime end);
 
         /// <Summary>
         /// 指定された科目に紐づくレコードを取得する
         /// </Summary>
         /// <param Name="accountCollection">指定する科目</param>
         /// <returns>指定された科目に紐づくレコード</returns>
-        SubaccountCollection selectWhereAccountIn(List<Account> accountCollection);
+        SubaccountCollection select(List<Account> accountCollection);
     }
 }

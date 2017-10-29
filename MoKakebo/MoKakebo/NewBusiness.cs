@@ -46,7 +46,7 @@ namespace MoKakebo {
             if (lst.SelectedItems.Count == 0) { return; }
             List<Account> terms = new List<Account>() { (Account)lst.SelectedItems[0].Tag };
 
-            SubaccountCollection collection = Factory.getSubaccountDao().selectWhereAccountIn(terms);
+            SubaccountCollection collection = Factory.getSubaccountDao().select(terms);
             collection.sort(new SubaccountCollection.LatestUsedDateDescSorter());
             loadLstBase(this.lstSubaccount2, collection);
         }
@@ -56,7 +56,7 @@ namespace MoKakebo {
             if(lst.SelectedItems.Count == 0) { return; }
             SubaccountCollection terms = new SubaccountCollection() { (Subaccount)lst.SelectedItems[0].Tag };
 
-            SummaryCollection collection = Factory.getSummaryDao().selectWhereSubaccountIn(terms);
+            SummaryCollection collection = Factory.getSummaryDao().select(terms);
             collection.sort(new SummaryCollection.LatestUsedDateDescSorter());
             loadLstBase(this.lstSummary2, collection);
         }

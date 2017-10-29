@@ -177,7 +177,7 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
         /// </Summary>
         /// <returns>テーブル全件</returns>
         public SubaccountCollection selectAll() {
-            return selectWhereLatestDateBetween(DateTime.MinValue, DateTime.MaxValue);
+            return select(DateTime.MinValue, DateTime.MaxValue);
         }
 
         /// <Summary>
@@ -185,7 +185,7 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
         /// </Summary>
         /// <param Name="accountCollection">指定する科目</param>
         /// <returns>指定された科目に紐づくレコード</returns>
-        public SubaccountCollection selectWhereAccountIn(List<Account> accountCollection) {
+        public SubaccountCollection select(List<Account> accountCollection) {
             SubaccountCollection result = new SubaccountCollection();
             string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_ACCOUNT}=@{COL_ACCOUNT} {ORDER}";
 
@@ -205,7 +205,7 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
         /// <param Name="start">開始日付</param>
         /// <param Name="end">終了日付</param>
         /// <returns>指定された日付の範囲内のレコード</returns>
-        public SubaccountCollection selectWhereLatestDateBetween(DateTime start, DateTime end) {
+        public SubaccountCollection select(DateTime start, DateTime end) {
             string startParam = "@start";
             string endParam = "@end";
             string sql = $"SELECT * FROM {TABLE_NAME} WHERE {COL_LATEST_USED} BETWEEN {startParam} and {endParam} {ORDER}";

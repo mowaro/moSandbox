@@ -42,7 +42,7 @@ namespace MoKakebo.Model {
 
         #region IHasIdName implement
         public bool Equals(IHasId obj) {
-            return this.Equals(obj.Id);
+            return this.Id.Equals(obj.Id);
         }
 
         public override int GetHashCode() {
