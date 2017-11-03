@@ -30,6 +30,7 @@ namespace MoKakebo.Framework.Utility {
                 using(SQLiteTransaction tran = con.BeginTransaction()) {
                     foreach(Command cmd in cmdList) {
                         using(SQLiteCommand sqliteCmd = cmd.createCommand(con)) {
+                            LogUtility.Print(sqliteCmd);
                             result = sqliteCmd.ExecuteNonQuery();
                         }
                     }

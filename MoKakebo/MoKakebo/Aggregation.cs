@@ -20,8 +20,6 @@ namespace MoKakebo {
         private BusinessCollection histories;
         /// <summary>月</summary>
         private Month period;
-        /// <summary>集計グループリスト</summary>
-        private List<string> groupList;
 
         public Aggregation() {
             InitializeComponent();
@@ -57,7 +55,7 @@ namespace MoKakebo {
 
             foreach (KeyValuePair<IHasIdName, double> subTotal in subTotals) {
                 double rate = (subTotal.Value / total) * 100.0;
-                DataPoint dp = new DataPoint(0, rate) { LegendText = subTotal.Key.Name };
+                DataPoint dp = new DataPoint(0, rate) { LegendText = $"{subTotal.Key.Name}\r\n{subTotal.Value.ToString("C")}" };
                 this.cht.Series[title].Points.Add(dp);
             }
 
@@ -120,6 +118,7 @@ namespace MoKakebo {
                     business.Amount.ToString("C"),
                     business.Comment};
                 ListViewItem item = new ListViewItem(subItems);
+                item.Tag = business;
                 this.lstHistory.Items.Add(item);
             }
             this.lstHistory.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -139,6 +138,81 @@ namespace MoKakebo {
 
         private void cmbGroup_SelectedIndexChanged(object sender, EventArgs e) {
             refresh();
+        }
+
+        private void btnRegister_Click(object sender, EventArgs e) {
+            InputBusiness dlg = new InputBusiness(Const.Enum.InputMode.Register, null);
+            DialogResult result = dlg.ShowDialog(this);
+            if (result.Equals(DialogResult.OK)) {
+                refresh();
+            }
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e) {
+            if (this.lstHistory.SelectedItems.Count == 0) {
+                MessageBox.Show(this, "編集したい履歴を選択してね！", "入力エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            Business src = new Business();
+            foreach (ListViewItem item in lstHistory.SelectedItems) {
+                src = (Business)item.Tag;
+            }
+
+            InputBusiness dlg = new InputBusiness(Const.Enum.InputMode.Edit, src);
+            DialogResult result = dlg.ShowDialog(this);
+            if(result.Equals(DialogResult.OK)) {
+                refresh();
+            }
+        }
+
+        private void lstHistory_MouseDoubleClick(object sender, MouseEventArgs e) {
+            btnEdit_Click(sender, e);
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e) {
+            if(this.lstHistory.SelectedItems.Count == 0) {
+                MessageBox.Show(this, "削除したい履歴を選択してね！", "入力エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            Business src = new Business();
+            foreach(ListViewItem item in lstHistory.SelectedItems) {
+                src = (Business)item.Tag;
+            }
+
+            StringBuilder message = new StringBuilder();
+            message.AppendLine($"この取引を削除してOK？");
+            message.AppendLine($"----------------------");
+            message.AppendLine($"日付　　：{src.Date.ToShortDateString()}");
+            message.AppendLine($"勘定科目：{src.Summary.Subaccount.Name}");
+            message.AppendLine($"摘要　　：{src.Summary.Name}");
+            message.AppendLine($"金額　　：{src.Amount.ToString("C")}");
+            message.AppendLine($"コメント：{src.Comment}");
+
+            DialogResult dr
+                = MessageBox.Show(this, message.ToString(), "確認", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            if(dr.Equals(DialogResult.Cancel)) {
+                return;
+            }
+
+
+            Factory.getBusinessDao().delete(src.Id);
+        }
+
+        private void lstHistory_KeyPress(object sender, KeyPressEventArgs e) {
+
+        }
+
+        private void lstHistory_KeyUp(object sender, KeyEventArgs e) {
+            if(!e.KeyCode.Equals(Keys.Delete)) {
+                return;
+            }
+            if(this.lstHistory.SelectedItems.Count == 0) {
+                return;
+            }
+
+            btnDelete_Click(sender, e);
         }
     }
 }

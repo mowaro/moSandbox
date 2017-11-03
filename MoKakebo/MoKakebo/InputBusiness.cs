@@ -5,18 +5,36 @@ using MoKakebo.Const;
 using MoKakebo.Dao;
 using MoKakebo.Framework.Model.Interface;
 using System.Collections.Generic;
+using static MoKakebo.Const.Enum;
 
 namespace MoKakebo {
     /// <Summary>
     /// 入力画面
     /// </Summary>
-    public partial class NewBusiness : Form {
+    public partial class InputBusiness : Form {
+
+        public InputMode inputMode { get; private set; }
+        public Business business { get; private set; }
 
         /// <Summary>
         /// コンストラクタ
         /// </Summary>
-        public NewBusiness() {
+        public InputBusiness() {
             InitializeComponent();
+        }
+
+        public InputBusiness(InputMode inputMode, Business business) {
+            InitializeComponent();
+            this.inputMode = inputMode;
+            this.business = business;
+
+            string btnRegisterText = string.Empty;
+            if (this.inputMode.Equals(InputMode.Register)) {
+                btnRegisterText = "新規追加(&S)";
+            } else {
+                btnRegisterText = "変更保存(&S)";
+            }
+            this.btnRegister.Text = btnRegisterText;
         }
 
         #region Event
@@ -31,7 +49,7 @@ namespace MoKakebo {
             this.txtAmount.Text = string.Empty;
             this.txtComment.Text = string.Empty;
             try {
-                loadLstBase(this.lstAccount2, Account.getList());
+                loadLstBase(this.lstAccount2, Const.Account.getList());
             }
             catch (Exception ex) {
                 throw ex;
@@ -39,12 +57,24 @@ namespace MoKakebo {
 
             // default focus
             this.txtAmount.Focus();
+
+            if (this.inputMode.Equals(InputMode.Edit)) {
+                this.dtpDate.Value = this.business.Date;
+                this.txtAmount.Text = this.business.Amount.ToString("C");
+                this.txtComment.Text = this.business.Comment;
+                this.lstAccount2.SelectedItems.Clear();
+                this.lstAccount2.Items[this.business.Summary.Subaccount.Account.Id.ToString()].Selected = true;
+                this.lstSubaccount2.SelectedItems.Clear();
+                this.lstSubaccount2.Items[this.business.Summary.Subaccount.Id.ToString()].Selected = true;
+                this.lstSummary2.SelectedItems.Clear();
+                this.lstSummary2.Items[this.business.Summary.Id.ToString()].Selected = true;
+            }
         }
 
         private void lstAccount2_SelectedIndexChanged(object sender, EventArgs e) {
             ListView lst = (ListView)sender;
             if (lst.SelectedItems.Count == 0) { return; }
-            List<Account> terms = new List<Account>() { (Account)lst.SelectedItems[0].Tag };
+            List<Const.Account> terms = new List<Const.Account>() { (Const.Account)lst.SelectedItems[0].Tag };
 
             SubaccountCollection collection = Factory.getSubaccountDao().select(terms);
             collection.sort(new SubaccountCollection.LatestUsedDateDescSorter());
@@ -66,11 +96,18 @@ namespace MoKakebo {
         }
 
         private void btnRegister_Click(object sender, EventArgs e) {
-            Business newBusiness = new Business(
-                0, getSelectedSummary(), this.dtpDate.Value, getAmount(), this.txtComment.Text);
+            if (this.inputMode.Equals(InputMode.Register)) {
+                Business newBusiness = new Business(
+                    0, getSelectedSummary(), this.dtpDate.Value, getAmount(), this.txtComment.Text);
+                Factory.getBusinessDao().register(newBusiness);
+            } else {
+                Business newBusiness = new Business(
+                    this.business.Id, getSelectedSummary(), this.dtpDate.Value, getAmount(), this.txtComment.Text);
+                Factory.getBusinessDao().update(newBusiness);
+            }
 
-            Factory.getBusinessDao().register(newBusiness);
-            Main_Load(sender, e);
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void txtAmount_Leave(object sender, EventArgs e) {
@@ -78,11 +115,7 @@ namespace MoKakebo {
             TextBox target = (TextBox)sender;
             target.Text = string.Format("{0:C}", amount);
         }
-
-        private void btnHistory_Click(object sender, EventArgs e) {
-            Aggregation dlg = new Aggregation();
-            dlg.Show(this);
-        }
+        
         #endregion
 
         #region private method
@@ -93,7 +126,7 @@ namespace MoKakebo {
 
             target.Items.Clear();
             foreach(IHasIdName item in dataSource) {
-                ListViewItem lvi = target.Items.Add(new ListViewItem() { Text = item.Name, Tag = item });
+                ListViewItem lvi = target.Items.Add(new ListViewItem() { Name = item.Id.ToString(), Text = item.Name, Tag = item });
             }
 
             target.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -108,11 +141,6 @@ namespace MoKakebo {
             return double.Parse(this.txtAmount.Text, System.Globalization.NumberStyles.Currency);
         }
         #endregion
-
-        private void button1_Click(object sender, EventArgs e) {
-            sample sample = new sample();
-            sample.Show();
-        }
 
     }
 }

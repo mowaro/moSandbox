@@ -94,13 +94,14 @@
     <Compile Include="Framework\Model\Interface\IHasId.cs" />
     <Compile Include="Framework\Model\Abstract\HasIdList.cs" />
     <Compile Include="Framework\Model\Interface\IHasLatestUsed.cs" />
+    <Compile Include="Framework\Utility\LogUtility.cs" />
     <Compile Include="Framework\Utility\SqliteUtility.cs" />
     <Compile Include="Model\Month.cs" />
-    <Compile Include="NewBusiness.cs">
+    <Compile Include="InputBusiness.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewBusiness.Designer.cs">
-      <DependentUpon>NewBusiness.cs</DependentUpon>
+    <Compile Include="InputBusiness.Designer.cs">
+      <DependentUpon>InputBusiness.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Business.cs" />
     <Compile Include="Model\BusinessCollection.cs" />
@@ -119,8 +120,8 @@
     <EmbeddedResource Include="Aggregation.resx">
       <DependentUpon>Aggregation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewBusiness.resx">
-      <DependentUpon>NewBusiness.cs</DependentUpon>
+    <EmbeddedResource Include="InputBusiness.resx">
+      <DependentUpon>InputBusiness.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

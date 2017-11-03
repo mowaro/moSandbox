@@ -248,8 +248,13 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
 
             string dateFormat = "yyyy/MM/dd";
             List<SQLiteParameter> prmList = new List<SQLiteParameter>();
-            prmList.Add(new SQLiteParameter(startParam, start.ToString(dateFormat)));
-            prmList.Add(new SQLiteParameter(endParam, end.ToString(dateFormat)));
+
+            string startValue =
+                start == null || start.Equals(DateTime.MinValue) ? string.Empty : start.ToString(dateFormat);
+            string endValue = end.ToString(dateFormat);
+
+            prmList.Add(new SQLiteParameter(startParam, startValue));
+            prmList.Add(new SQLiteParameter(endParam, endValue));
 
             return select(new SqliteUtility.Command(sql, prmList));
         }
@@ -269,8 +274,13 @@ namespace MoKakebo.Dao.RDB.SQLiteImplement {
 
             string dateFormat = "yyyy/MM/dd";
             List<SQLiteParameter> prmDate = new List<SQLiteParameter>();
-            prmDate.Add(new SQLiteParameter(startParam, start.ToString(dateFormat)));
-            prmDate.Add(new SQLiteParameter(endParam, end.ToString(dateFormat)));
+
+            string startValue =
+                start == null || start.Equals(DateTime.MinValue) ? string.Empty : start.ToString(dateFormat);
+            string endValue = end.ToString(dateFormat);
+
+            prmDate.Add(new SQLiteParameter(startParam, startValue));
+            prmDate.Add(new SQLiteParameter(endParam, endValue));
 
             foreach(Summary targetSummary in summaryCollection) {
                 List<SQLiteParameter> prms = new List<SQLiteParameter>(prmDate);

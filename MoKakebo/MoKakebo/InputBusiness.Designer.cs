@@ -1,5 +1,5 @@
 ﻿namespace MoKakebo {
-    partial class NewBusiness {
+    partial class InputBusiness {
         /// <Summary>
         /// 必要なデザイナー変数です。
         /// </Summary>
@@ -36,8 +36,6 @@
             this.lblAccount = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnRegister = new System.Windows.Forms.Button();
-            this.btnHistory = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.grpInput.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,15 +53,17 @@
             this.grpInput.Controls.Add(this.lblAccount);
             this.grpInput.Controls.Add(this.btnClear);
             this.grpInput.Controls.Add(this.btnRegister);
+            this.grpInput.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.grpInput.Location = new System.Drawing.Point(12, 12);
             this.grpInput.Name = "grpInput";
-            this.grpInput.Size = new System.Drawing.Size(534, 298);
+            this.grpInput.Size = new System.Drawing.Size(534, 323);
             this.grpInput.TabIndex = 0;
             this.grpInput.TabStop = false;
             this.grpInput.Text = "入力";
             // 
             // lstSummary2
             // 
+            this.lstSummary2.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lstSummary2.HideSelection = false;
             this.lstSummary2.Location = new System.Drawing.Point(311, 18);
             this.lstSummary2.Name = "lstSummary2";
@@ -75,14 +75,16 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 249);
+            this.label1.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label1.Location = new System.Drawing.Point(6, 261);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 12);
+            this.label1.Size = new System.Drawing.Size(32, 18);
             this.label1.TabIndex = 11;
             this.label1.Text = "注釈";
             // 
             // lstSubaccount2
             // 
+            this.lstSubaccount2.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lstSubaccount2.HideSelection = false;
             this.lstSubaccount2.Location = new System.Drawing.Point(152, 18);
             this.lstSubaccount2.Name = "lstSubaccount2";
@@ -94,7 +96,8 @@
             // 
             // txtComment
             // 
-            this.txtComment.Location = new System.Drawing.Point(41, 246);
+            this.txtComment.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.txtComment.Location = new System.Drawing.Point(41, 258);
             this.txtComment.Multiline = true;
             this.txtComment.Name = "txtComment";
             this.txtComment.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -103,6 +106,7 @@
             // 
             // lstAccount2
             // 
+            this.lstAccount2.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lstAccount2.HideSelection = false;
             this.lstAccount2.Location = new System.Drawing.Point(41, 18);
             this.lstAccount2.Name = "lstAccount2";
@@ -114,9 +118,10 @@
             // 
             // txtAmount
             // 
-            this.txtAmount.Location = new System.Drawing.Point(41, 221);
+            this.txtAmount.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.txtAmount.Location = new System.Drawing.Point(41, 227);
             this.txtAmount.Name = "txtAmount";
-            this.txtAmount.Size = new System.Drawing.Size(165, 19);
+            this.txtAmount.Size = new System.Drawing.Size(165, 25);
             this.txtAmount.TabIndex = 9;
             this.txtAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtAmount.Leave += new System.EventHandler(this.txtAmount_Leave);
@@ -124,41 +129,46 @@
             // lblAmount
             // 
             this.lblAmount.AutoSize = true;
-            this.lblAmount.Location = new System.Drawing.Point(6, 224);
+            this.lblAmount.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.lblAmount.Location = new System.Drawing.Point(6, 230);
             this.lblAmount.Name = "lblAmount";
-            this.lblAmount.Size = new System.Drawing.Size(29, 12);
+            this.lblAmount.Size = new System.Drawing.Size(32, 18);
             this.lblAmount.TabIndex = 8;
             this.lblAmount.Text = "金額";
             // 
             // dtpDate
             // 
+            this.dtpDate.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDate.Location = new System.Drawing.Point(41, 196);
+            this.dtpDate.Location = new System.Drawing.Point(44, 196);
             this.dtpDate.Name = "dtpDate";
-            this.dtpDate.Size = new System.Drawing.Size(121, 19);
+            this.dtpDate.Size = new System.Drawing.Size(121, 25);
             this.dtpDate.TabIndex = 7;
             // 
             // lblDate
             // 
             this.lblDate.AutoSize = true;
+            this.lblDate.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lblDate.Location = new System.Drawing.Point(6, 201);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(29, 12);
+            this.lblDate.Size = new System.Drawing.Size(32, 18);
             this.lblDate.TabIndex = 6;
             this.lblDate.Text = "日付";
             // 
             // lblAccount
             // 
             this.lblAccount.AutoSize = true;
+            this.lblAccount.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.lblAccount.Location = new System.Drawing.Point(6, 21);
             this.lblAccount.Name = "lblAccount";
-            this.lblAccount.Size = new System.Drawing.Size(29, 12);
+            this.lblAccount.Size = new System.Drawing.Size(32, 18);
             this.lblAccount.TabIndex = 2;
             this.lblAccount.Text = "科目";
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(425, 252);
+            this.btnClear.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.btnClear.Location = new System.Drawing.Point(425, 277);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(99, 40);
             this.btnClear.TabIndex = 1;
@@ -168,7 +178,8 @@
             // 
             // btnRegister
             // 
-            this.btnRegister.Location = new System.Drawing.Point(320, 252);
+            this.btnRegister.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.btnRegister.Location = new System.Drawing.Point(320, 277);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(99, 40);
             this.btnRegister.TabIndex = 0;
@@ -176,35 +187,13 @@
             this.btnRegister.UseVisualStyleBackColor = true;
             this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
-            // btnHistory
-            // 
-            this.btnHistory.Location = new System.Drawing.Point(437, 316);
-            this.btnHistory.Name = "btnHistory";
-            this.btnHistory.Size = new System.Drawing.Size(99, 40);
-            this.btnHistory.TabIndex = 12;
-            this.btnHistory.Text = "履歴...(&H)";
-            this.btnHistory.UseVisualStyleBackColor = true;
-            this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(279, 317);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(152, 39);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "sample";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // NewBusiness
+            // InputBusiness
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(555, 368);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.btnHistory);
+            this.ClientSize = new System.Drawing.Size(555, 347);
             this.Controls.Add(this.grpInput);
-            this.Name = "NewBusiness";
+            this.Name = "InputBusiness";
             this.Text = "MoKakebo";
             this.Load += new System.EventHandler(this.Main_Load);
             this.grpInput.ResumeLayout(false);
@@ -225,11 +214,9 @@
         private System.Windows.Forms.Button btnRegister;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtComment;
-        private System.Windows.Forms.Button btnHistory;
         private System.Windows.Forms.ListView lstAccount2;
         private System.Windows.Forms.ListView lstSubaccount2;
         private System.Windows.Forms.ListView lstSummary2;
-        private System.Windows.Forms.Button button1;
     }
 }
 
